@@ -1,9 +1,8 @@
 import { connect } from 'react-redux';
 import { Route, withRouter, Link} from 'react-router-dom';
-import { getAllCategory, getAllPosts, getCommente, createNewComment, upVotePost, upVoteComment, downVotePost, downVoteComment } from './actions/index'
+import { getAllCategory, getAllPosts, getCommente, createNewComment, upVotePost, upVoteComment, downVotePost, downVoteComment } from '../actions/index'
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import '../App.css';
 
 export function getFormattedDate(_date) {
     var date = new Date(_date)
@@ -26,16 +25,12 @@ export function getFormattedDate(_date) {
 
 class App extends Component {
   render() {
+    const {categories, posts, comments} = this.props
+    console.log('root',this)
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+      <div>
       </div>
+
     );
   }
 }
@@ -43,8 +38,9 @@ class App extends Component {
 export function mapDispatchToProps(dispatch) {
 
   return {
-    posts: dispatch(getAllPosts()),
-    categories: dispatch(getAllCategory()),
+    // posts: dispatch(getAllPosts()),
+    // categories: dispatch(getAllCategory()),
+
 
     getCommente: (id) => dispatch(getCommente(id)),
     createNewComment: (comments) => dispatch(createNewComment(comments)),
@@ -60,5 +56,11 @@ export function mapDispatchToProps(dispatch) {
 export function mapStateToProps(state, ownProps, dispatch) {
 
   const {categories, posts, comments} = state
+    console.log(state)
+    return {
+    categories: categories,
+    posts: posts,
+    // comments: comments
+  }
 }
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App))

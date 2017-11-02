@@ -60,7 +60,6 @@ export const deletePost = (id) =>
     for(let j=0; j<value.length; j++){
         value[j].parentDeleted=true
     }
-    console.log(value)
   }
   ))
 

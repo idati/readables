@@ -4,7 +4,6 @@
 import { GET_ALL_CATEGORY, GET_ALL_POSTS, GET_ALL_COMMENTS, CREATE_COMMENT, UP_VOTE_COMMENT, DOWN_VOTE_COMMENT, UP_VOTE_POST, DOWN_VOTE_POST } from '../actions/index'
 
 export function categories(state = {}, action){
-  console.log('#',action.type)
   switch (action.type) {
     case GET_ALL_CATEGORY:
       return action.categories.reduce((categories, category) => {
@@ -17,11 +16,9 @@ export function categories(state = {}, action){
 }
 
 export function posts(state = {}, action){
-  console.log('##',action)
   switch (action.type) {
     
     case GET_ALL_POSTS:
-      console.log('posts', action)
       return action.posts.reduce((posts, post) => {
         posts[post.id] = [
                             post.id, 
