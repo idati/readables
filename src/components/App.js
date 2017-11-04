@@ -2,6 +2,7 @@ import { connect } from 'react-redux';
 import { Route, withRouter, Link} from 'react-router-dom';
 import { getAllCategory, getAllPosts, getCommente, createNewComment, upVotePost, upVoteComment, downVotePost, downVoteComment } from '../actions/index'
 import React, { Component } from 'react';
+import CategoryList from './CategoryList';
 import '../App.css';
 
 export function getFormattedDate(_date) {
@@ -24,43 +25,61 @@ export function getFormattedDate(_date) {
 }
 
 class App extends Component {
+
+  // componentDidMount() {
+  //   const {posts, categories, comments} = this.props
+  // }
+
+
+  // AllCategories = () => {
+  //   let Cat = this.props.categories
+  //   Object.keys(posts).map(key) => {
+  //     cat
+  //   }
+  //   return this.props.categories.reduce((result, i) => {
+  //     result.push(i)
+  //     return result
+  //   },[])
+  // }
+  // console.log(this.AllCategories)
   render() {
     const {categories, posts, comments} = this.props
     console.log('root',this)
     return (
       <div>
+        <Route exact path="/" render={() => <CategoryList/>}/>
       </div>
-
     );
   }
 }
 
-export function mapDispatchToProps(dispatch) {
+// export function mapDispatchToProps(dispatch) {
 
-  return {
-    // posts: dispatch(getAllPosts()),
-    // categories: dispatch(getAllCategory()),
+//   return {
+//     posts: dispatch(getAllPosts()),
+//     categories: dispatch(getAllCategory()),
 
 
-    getCommente: (id) => dispatch(getCommente(id)),
-    createNewComment: (comments) => dispatch(createNewComment(comments)),
-    upVote: (id) => dispatch(upVotePost(id)),
-    downVote: (id) => dispatch(downVotePost(id)),
+//     getCommente: (id) => dispatch(getCommente(id)),
+//     createNewComment: (comments) => dispatch(createNewComment(comments)),
+//     upVote: (id) => dispatch(upVotePost(id)),
+//     downVote: (id) => dispatch(downVotePost(id)),
 
-    upVoteComment: (id) => dispatch(upVoteComment(id)),
-    downVoteComment: (id) => dispatch(downVoteComment(id)),
+//     upVoteComment: (id) => dispatch(upVoteComment(id)),
+//     downVoteComment: (id) => dispatch(downVoteComment(id)),
     
-  }
-}
+//   }
+// }
 
-export function mapStateToProps(state, ownProps, dispatch) {
+// export function mapStateToProps(posts) {
 
-  const {categories, posts, comments} = state
-    console.log(state)
-    return {
-    categories: categories,
-    posts: posts,
-    // comments: comments
-  }
-}
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App))
+//   // const {categories, posts, comments} = state
+//     // console.log(state)
+//     return {
+//     // categories: categories,
+//     posts,
+//     // comments: comments
+//   }
+// }
+// export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App))
+export default withRouter((App))
