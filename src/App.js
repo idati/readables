@@ -10,14 +10,19 @@ import './App.css';
 class App extends Component {
 
   componentDidMount() {
-    this.props.categories;
+    this.props.getAllCategory();
   }
 
   render() {
     const {categories} = this.props
     console.log('root',this)
     return (
-      <div></div>
+      <div>
+        <Route exact path="/" render=
+        {() =>
+          <CategoryList/>
+        }/>
+      </div>
     );
   }
 }
@@ -26,9 +31,7 @@ function mapDispatchToProps(dispatch) {
 
   return {
 
-    upVote: (id) => dispatch(upVotePost(id)),
-    downVote: (id) => dispatch(downVotePost(id)),
-    
+    getAllCategory: () => dispatch(getAllCategory())
   }
 }
 
