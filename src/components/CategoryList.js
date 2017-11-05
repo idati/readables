@@ -11,12 +11,11 @@ class CategoryList extends Component {
     }
 
   	render(){
-  		const {cat} = this.props.categories
-  		console.log('root2', cat)
+  		const {categories} = this.props.categories
   		console.log('root2', this)
   		return(
   			<div>
-  			{cat.map((i) => ({i}))}  			
+  			{categories.map((i) => ({i}))}  			
   			</div>
   			)
 
@@ -35,7 +34,7 @@ export function mapDispatchToProps(dispatch) {
 export function mapStateToProps(categories) {
 
 	return{
-		cat: categories
+		categories: categories
 	}
 }
 

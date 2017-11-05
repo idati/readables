@@ -15,71 +15,7 @@ export function categories(state = {}, action){
   }
 }
 
-export function posts(state = {}, action){
-  switch (action.type) {
-    
-    case GET_ALL_POSTS:
-      return action.posts.reduce((posts, post) => {
-        posts[post.id] = [
-                            post.id, 
-                            post.timestamp,
-                            post.title,
-                            post.body,
-                            post.author, 
-                            post.voteScore,
-                            post.category,
-                            post.deleted
-                          ] 
-        return posts
-      }, {})
-    case UP_VOTE_POST:
-      return {
-        ...state,
-        posts: action.posts
-      }
-        case DOWN_VOTE_POST:
-      return {
-        ...state,
-        posts: action.posts
-      }
-    default:
-      return state
-  }
-}
 
-export function comments(state = {}, action){
-  switch(action.type){
-    case GET_ALL_COMMENTS:
-          return {
-              ...state,
-              [action.id]: action.comments
-          }
+const rootReducer = combineReducers({categories})
 
-      case CREATE_COMMENT:
-        let existingComments = state[action.comments.parentId] || [];
-          return {
-            ...state,
-           [action.comments.parentId]: existingComments.concat(action.comments)
-          }
-      case DOWN_VOTE_COMMENT:
-      case UP_VOTE_COMMENT:
-            let existingComments2 = state[action.comments.parentId] || [];
-            for(var i in existingComments2){
-                if (existingComments2[i].id===action.comments.id){
-                    existingComments2[i]=action.comments
-
-      }
-    }
-      return {
-        ...state,
-        [action.comments.parentId]: existingComments2
-      }
-
-      default:
-        return state
-  }
-}
-
-const reducer = combineReducers({categories, posts, comments})
-
-export default reducer
+export default rootReducer
