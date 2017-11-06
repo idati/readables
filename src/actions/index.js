@@ -50,22 +50,29 @@ export function getAllPosts() {
 }
 
 function getAllComment(comments,id) {
-  console.log('cctop',comments)
+  console.log('cctop',comments, id)
   return {
     type:GET_ALL_COMMENTS,
     id,
     comments
   }
 }
-export function getAllComments() {
-  return dispatch => {
-    //return getAllCommentsFromPost('8xf0y6ziyjabvozdd253nd')
-    return getPosts()
-      .then((data)=> data
-        .map((d)=> getAllCommentsFromPost(d.id)
-          .then(data => dispatch(getAllComment(data)))))
-      // dispatch(data))
-  }
+// export function getAllComments() {
+//   return dispatch => {
+//     //return getAllCommentsFromPost('8xf0y6ziyjabvozdd253nd')
+//     return getPosts()
+//       .then((data)=> data
+//         .map((d)=> getAllCommentsFromPost(d.id)
+//           .then(data => dispatch(getAllComment(data)))))
+//       // dispatch(data))
+//   }
+// }
+
+export function getAllComments(post) {
+    return dispatch => {
+        return getAllCommentsFromPost(post).then(data =>
+            dispatch(getAllComment(data, post)))
+    }
 }
 
 function getAllCommentById(comments,id) {

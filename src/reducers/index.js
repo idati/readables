@@ -56,8 +56,9 @@ export function comments(state = {}, action){
               ...state,
               [action.id]: action.comments
           }
-          
+
     case GET_ALL_COMMENTS:
+    	console.log('comment', action)
           return {
               ...state,
               [action.id]: action.comments
