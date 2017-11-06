@@ -4,17 +4,27 @@ import { getAllCategory, getAllPosts, getCommente, createNewComment, upVotePost,
 import React, { Component } from 'react';
 import '../App.css';
 
-class PostList extends Component {
+export class PostList extends Component {
 
-	componentDidMount() {
+	  componentDidMount() {
         this.props.getAllPosts();
     }
 
+
   	render(){
-  		// const {categories} = this.props.categories
+      let {posts, getCommente} = this.props
+
+      let index=['id: ', 'timestamp: ', 'title: ', 'body: ', 'author: ', 'VoteScore: ', 'category: ']
+  
   		console.log('root3', this)
+      let k=0
   		return(
-  			<div>			
+  			<div>
+          {posts.map((i) => (
+            <ul key={i}>
+            {i.map((x,j) => (<ul key={j}>{index[j]}{ x }</ul>))}
+            </ul>
+            ))}
   			</div>
   			)
 
@@ -25,15 +35,17 @@ class PostList extends Component {
 export function mapDispatchToProps(dispatch) {
 
 	return{
-		getAllPosts: () => dispatch(getAllPosts())
+		getAllPosts: () => dispatch(getAllPosts()),
+    getCommente: (id) => dispatch(getCommente(id))
 	}
 
 }
 
-export function mapStateToProps({posts}) {
+export function mapStateToProps({posts, comments}) {
 
 	return{
-    posts: posts
+    posts: posts,
+    comments: comments
 	}
 }
 

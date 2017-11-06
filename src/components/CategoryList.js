@@ -2,6 +2,7 @@ import { connect } from 'react-redux';
 import { Route, withRouter, Link} from 'react-router-dom';
 import { getAllCategory, getAllPosts, getCommente, createNewComment, upVotePost, upVoteComment, downVotePost, downVoteComment } from '../actions/index'
 import React, { Component } from 'react';
+import PostList from './PostList'
 import '../App.css';
 
 class CategoryList extends Component {
@@ -15,11 +16,15 @@ class CategoryList extends Component {
       let {categories} = this.props
   		console.log('root2', this, typeof categories)
   		return(
-  			<div>
-            <ul>
-              {categories.map((i) => ( <li key={i}><Link to={`/${i}`}>{i}</Link></li>))}
-            </ul>
-  			</div>
+  			<div key='1'>
+          <div key='1.1'>
+            <ul><h2> Categorie's </h2></ul>
+            <ul>{categories.map((i) => ( <ul key={i}><Link to={`/${i}`}>{i}</Link></ul>))}</ul>       
+          </div>
+  			   <ul><h2> Post's </h2></ul>
+          <PostList />
+        </div>
+
   			)
 
   	}

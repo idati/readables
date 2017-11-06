@@ -12,6 +12,7 @@ export const UP_VOTE_POST = 'UP_VOTE_POST';
 export const DOWN_VOTE_POST = 'DOWN_VOTE_POST';
 export const UP_VOTE_COMMENT = 'UP_VOTE_COMMENT';
 export const DOWN_VOTE_COMMENT = 'DOWN_VOTE_COMMENT';
+export const GET_ALL_COMMENTS_BY_ID='GET_ALL_COMMENTS_BY_ID';
 
 export const LOADING_CATEGORY_ENUM = {
   COMMENTS: 'COMMENTS',
@@ -67,9 +68,18 @@ export function getAllComments() {
   }
 }
 
+function getAllCommentById(comments,id) {
+  console.log('cctop',comments)
+  return {
+    type:GET_ALL_COMMENTS_BY_ID,
+    id,
+    comments
+  }
+}
+
 export const getCommente = (id) => dispatch =>(
     getAllCommentsFromPost(id)
-    .then(data => dispatch(getAllComment(data,id)))
+    .then(data => dispatch(getAllCommentById(data,id)))
   )
 
 
