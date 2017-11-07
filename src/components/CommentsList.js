@@ -3,44 +3,31 @@ import { Route, withRouter, Link} from 'react-router-dom';
 import { getAllComments, getAllCategory, getAllPosts, getCommente, createNewComment, upVotePost, upVoteComment, downVotePost, downVoteComment } from '../actions/index'
 import React, { Component } from 'react';
 import '../App.css';
-import {getAllCommentsFromPost} from '../api/index'
-import {CommentsList} from './CommentsList'
+// import {getAllCommentsFromPost} from '../api/index'
+// import {CommentList} from './CommentList'
 
-export class PostList extends Component {
+export class CommentsList extends Component {
 
 	  componentDidMount() {
-      // let {post} = this.props
+      let {comments} = this.props
       // this.props.getCommente(post)
       // console.log('this',this.props.posts)
-      this.props.getAllPosts();
+      // this.props.getAllPosts();
         // this.props.getCommente('8xf0y6ziyjabvozdd253nd');
       // console.log('root3', getCommente())
     
     }
-
-  	render(){
+    render(){
       console.log(this)
-      let {posts} = this.props
-      // console.log(getAllCommentsFromPost('8xf0y6ziyjabvozdd253nd'))
-      let index=['id: ', 'timestamp: ', 'title: ', 'body: ', 'author: ', 'VoteScore: ', 'category: ']
-      // this.getall('8xf0y6ziyjabvozdd253nd')
-      let k=0
-  		return(
-  			<div>
-          {posts.map((i) => (
-            <ul key={i}>
-            <CommentsList/>
-            {i.map((x,j) => (<ul key={j}>{index[j]}{ x }</ul>))}
-            </ul>
-            ))}
-  			</div>
-  			)
-
-  	}
-
+      return (
+        <div>
+        Test
+        </div>
+        )
     }
 
-// <CommentList post={i[0]} getCommente={getCommente}/>
+  }
+
 
 export function mapDispatchToProps(dispatch) {
 
@@ -60,4 +47,4 @@ export function mapStateToProps({posts}) {
 	}
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(PostList)
+export default connect(mapStateToProps, mapDispatchToProps)(CommentsList)
