@@ -16,13 +16,19 @@ import '../App.css';
 import {getAllCommentsFromPost} from '../api/index'
 import CommentsList from './CommentsList'
 
-class PostList extends Component {
+class category extends Component {
 
 	  componentDidMount() {
+      console.log(this)
+      let categoryName = this.props.match.params.category
+
+      // let categoryName = this.props.match.params.category
+      // console.log('categoryName',categoryName, this)
+      
       // let {post} = this.props
       // this.props.getCommente(post)
       // console.log('this',this.props.posts)
-      this.props.getAllPosts();
+      // this.props.getAllPosts();
         // this.props.getCommente('8xf0y6ziyjabvozdd253nd');
       // console.log('root3', getCommente())
     
@@ -30,7 +36,7 @@ class PostList extends Component {
 
 
   	render(){
-      // console.log(this)
+      console.log(this)
       let {posts, getAllPostsortbytime, getAllPostsortbyvote} = this.props
       // console.log(getAllCommentsFromPost('8xf0y6ziyjabvozdd253nd'))
       let index=['id: ', 'timestamp: ', 'title: ', 'body: ', 'author: ', 'VoteScore: ', 'category: ']
@@ -86,4 +92,4 @@ export function mapStateToProps({posts}) {
 	}
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(PostList)
+export default connect(mapStateToProps, mapDispatchToProps)(category)

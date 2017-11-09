@@ -4,6 +4,8 @@ import { Route, withRouter, Link, Switch} from 'react-router-dom';
 import { getAllCategory, getAllPosts, getCommente, createNewComment, upVotePost, upVoteComment, downVotePost, downVoteComment } from './actions/index'
 import React, { Component } from 'react';
 import CategoryList from './components/CategoryList';
+import PostList from './components/PostList'
+import Category from './components/category';
 import './App.css';
 
 
@@ -20,8 +22,12 @@ class App extends Component {
       <div>
         <Route exact path="/" render=
         {() =>
-          <CategoryList/>
+          <CategoryList />
         }/>
+        <Route exact path="/:category" render={() =>
+          <Category />
+        }
+        />
       </div>
     );
   }

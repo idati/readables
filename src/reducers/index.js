@@ -1,7 +1,17 @@
 
 
 import { combineReducers } from 'redux'
-import { GET_ALL_CATEGORY, GET_ALL_POSTS, GET_ALL_COMMENTS, CREATE_COMMENT, UP_VOTE_COMMENT, DOWN_VOTE_COMMENT, UP_VOTE_POST, DOWN_VOTE_POST, GET_ALL_COMMENTS_BY_ID } from '../actions/index'
+import { GET_ALL_CATEGORY, 
+	GET_ALL_POSTS, 
+	GET_ALL_COMMENTS, 
+	CREATE_COMMENT, 
+	UP_VOTE_COMMENT, 
+	DOWN_VOTE_COMMENT, 
+	UP_VOTE_POST, 
+	DOWN_VOTE_POST, 
+	GET_ALL_COMMENTS_BY_ID,
+	GET_ALL_POSTS_SORT_BY_TIME,
+	GET_ALL_POSTS_SORT_BY_VOTE } from '../actions/index'
 
 export function categories(state = [], action){
   switch (action.type) {
@@ -31,8 +41,14 @@ export function posts(state = [], action){
                             post.category,
                             post.deleted
                           ] )
-        return posts
+        return posts.sort()
       }, [])
+    case GET_ALL_POSTS_SORT_BY_TIME:
+    	return state.slice().sort(function(a,b){return b[1] - a[1]})
+  
+    case GET_ALL_POSTS_SORT_BY_VOTE:
+    	return state.slice().sort(function(a,b){return b[5] - a[5]})
+
     case UP_VOTE_POST:
       return {
         ...state,

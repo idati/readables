@@ -1,49 +1,54 @@
 import { connect } from 'react-redux';
 import { Route, withRouter, Link} from 'react-router-dom';
-import { getAllComments, getAllCategory, getAllPosts, getCommente, createNewComment, upVotePost, upVoteComment, downVotePost, downVoteComment } from '../actions/index'
+import { getAllComments, 
+  getAllCategory, 
+  getAllPosts, 
+  getCommente, 
+  createNewComment, 
+  upVotePost, 
+  upVoteComment, 
+  downVotePost, 
+  downVoteComment,
+  getAllPostsortbytime } from '../actions/index'
 import React, { Component } from 'react';
 import '../App.css';
-// import {getAllCommentsFromPost} from '../api/index'
-// import {CommentList} from './CommentList'
 
-export class CommentsList extends Component {
+
+class CommentsList extends Component {
 
 	  componentDidMount() {
-      let {comments} = this.props
-      // this.props.getCommente(post)
-      // console.log('this',this.props.posts)
-      // this.props.getAllPosts();
-        // this.props.getCommente('8xf0y6ziyjabvozdd253nd');
-      // console.log('root3', getCommente())
-    
-    }
-    render(){
+      let {id, getCommente} = this.props
       console.log(this)
-      return (
-        <div>
-        Test
-        </div>
-        )
+      getCommente(id)
+      // this.props.getAllPosts();    
+    }
+
+    render(){
+      let {id, comments} = this.props
+      // if(comments[id]) console.log(Object.keys(comments[id]).length)
+      if(comments[id])
+      return (<div>Number of Comments: {Object.keys(comments[id]).length}</div>)
+      else return ("")
     }
 
   }
 
 
-export function mapDispatchToProps(dispatch) {
+function mapDispatchToProps(dispatch) {
 
 	return{
-		getAllPosts: () => dispatch(getAllPosts()),
     getCommente: (id) => dispatch(getCommente(id)),
-    // getAllComments: () => dispatch(getAllComments())
+
+
 	}
 
 }
 
-export function mapStateToProps({posts}) {
+
+function mapStateToProps({comments}) {
 
 	return{
-    posts: posts,
-    // comments: comments
+    comments: comments,
 	}
 }
 

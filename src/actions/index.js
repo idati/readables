@@ -13,6 +13,8 @@ export const DOWN_VOTE_POST = 'DOWN_VOTE_POST';
 export const UP_VOTE_COMMENT = 'UP_VOTE_COMMENT';
 export const DOWN_VOTE_COMMENT = 'DOWN_VOTE_COMMENT';
 export const GET_ALL_COMMENTS_BY_ID='GET_ALL_COMMENTS_BY_ID';
+export const GET_ALL_POSTS_SORT_BY_TIME='GET_ALL_POSTS_SORT_BY_TIME;';
+export const GET_ALL_POSTS_SORT_BY_VOTE='GET_ALL_POSTS_SORT_BY_VOTE';
 
 export const LOADING_CATEGORY_ENUM = {
   COMMENTS: 'COMMENTS',
@@ -45,6 +47,39 @@ export function getAllPosts() {
   return dispatch => {
     return  getPosts().then(data =>
       dispatch(getAllPost(data)))
+      // dispatch(data))
+  }
+}
+
+
+
+
+function getAllPostsortbytime_(posts) {
+  return {
+    type:GET_ALL_POSTS_SORT_BY_TIME,
+    posts
+  }
+}
+export function getAllPostsortbytime() {
+  console.log('getAllPostsortbytime')
+  return dispatch => {
+    return  getPosts().then(data =>
+      dispatch(getAllPostsortbytime_(data)))
+      // dispatch(data))
+  }
+}
+
+function getAllPostsortbyvote_(posts) {
+  return {
+    type:GET_ALL_POSTS_SORT_BY_VOTE,
+    posts
+  }
+}
+export function getAllPostsortbyvote() {
+  console.log('getAllPostsortbyvote')
+  return dispatch => {
+    return  getPosts().then(data =>
+      dispatch(getAllPostsortbyvote_(data)))
       // dispatch(data))
   }
 }
