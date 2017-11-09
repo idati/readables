@@ -69,10 +69,10 @@ export function getAllPostfilterbycategory(category) {
 }
 
 
-function getPostbyId_(posts) {
+function getPostbyId_(posts2) {
   return {
     type:GET_POST_BY_ID,
-    posts
+    posts2
   }
 }
 export function getPostbyId(id) {

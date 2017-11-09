@@ -20,10 +20,12 @@ import Post from './Post'
 class PostList extends Component {
 
 	  componentDidMount() {
+      let {posts, getAllPostsortbytime, getAllPostsortbyvote, getAllPosts} = this.props
+      getAllPosts()
       // let {post} = this.props
       // this.props.getCommente(post)
       // console.log('this',this.props.posts)
-      this.props.getAllPosts();
+      // this.props.getAllPosts();
         // this.props.getCommente('8xf0y6ziyjabvozdd253nd');
       // console.log('root3', getCommente())
     
@@ -37,6 +39,8 @@ class PostList extends Component {
       let index=['id: ', 'timestamp: ', 'title: ', 'body: ', 'author: ', 'VoteScore: ', 'category: ']
       // this.getall('8xf0y6ziyjabvozdd253nd')
       let k=0
+      // this.props.getAllPosts();
+      console.log('????', this)
   		return(
   			<div>
           <ul>
@@ -53,7 +57,7 @@ class PostList extends Component {
           </ul> 
           {posts.map((i) => (
             <ul key={i}>
-              <Post id={i[0]} post={i}/>
+            <Post id={i[0]}/>
                 <ul><CommentsList id={i[0]} /></ul>
             </ul>
           ))}
@@ -67,7 +71,7 @@ class PostList extends Component {
 // <CommentList post={i[0]} getCommente={getCommente}/>
 // <Post id={i[0]}/>
 // {i.map((x,j) => (<ul key={j}>{index[j]}{ x }</ul>))}
-
+ // <Post id='6ni6ok3ym7mf1p33lnez'/>
 export function mapDispatchToProps(dispatch) {
 
 	return{

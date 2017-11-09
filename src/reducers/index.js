@@ -27,6 +27,53 @@ export function categories(state = [], action){
   }
 }
 
+export function posts2(state=[], action){
+	switch (action.type) {
+
+	case DOWN_VOTE_POST:
+		return state
+      // return [[action.posts.id, action.posts.timestamp, action.posts.title, action.posts.body, action.posts.author, action.posts.voteScore, action.posts.category, action.posts.deleted]]
+
+	case UP_VOTE_POST:
+		return state
+      // return [[action.posts.id, action.posts.timestamp, action.posts.title, action.posts.body, action.posts.author, action.posts.voteScore, action.posts.category, action.posts.deleted]]
+
+
+	case GET_ALL_POSTS:
+      return action.posts.reduce((posts, post) => {
+        posts.push([
+                            post.id, 
+                            post.timestamp,
+                            post.title,
+                            post.body,
+                            post.author, 
+                            post.voteScore,
+                            post.category,
+                            post.deleted
+                          ] )
+        return posts.sort()
+      }, [])
+
+	case GET_POST_BY_ID:
+	return action.posts2
+      // return [action.posts2.id, action.post2.timestamp]
+
+    // case UP_VOTE_POST:
+    //   return {
+    //     ...state,
+    //     posts: action.posts
+    //   }
+    //     case DOWN_VOTE_POST:
+    //   return {
+    //     ...state,
+    //     posts: action.posts
+    //   }
+
+	default:
+      return state
+	}
+}
+
 
 export function posts(state = [], action){
   switch (action.type) {
@@ -45,17 +92,15 @@ export function posts(state = [], action){
                           ] )
         return posts.sort()
       }, [])
+
     case GET_ALL_POSTS_SORT_BY_TIME:
     	return state.slice().sort(function(a,b){return b[1] - a[1]})
   
     case GET_ALL_POSTS_SORT_BY_VOTE:
     	return state.slice().sort(function(a,b){return b[5] - a[5]})
 
-    case GET_POST_BY_ID:
-      return {
-        ...state,
-        posts: action.posts
-      }
+    // case GET_POST_BY_ID:
+    //   return {posts: action.posts}
      
 
     case GET_ALL_POSTS_FILTER_BY_CATEGORY:
@@ -73,16 +118,16 @@ export function posts(state = [], action){
         return posts.sort()
       }, [])
 
-    case UP_VOTE_POST:
-      return {
-        ...state,
-        posts: action.posts
-      }
-        case DOWN_VOTE_POST:
-      return {
-        ...state,
-        posts: action.posts
-      }
+    // case UP_VOTE_POST:
+    //   return {
+    //     ...state,
+    //     posts: action.posts
+    //   }
+    //     case DOWN_VOTE_POST:
+    //   return {
+    //     ...state,
+    //     posts: action.posts
+    //   }
     default:
       return state
   }
@@ -130,6 +175,6 @@ export function comments(state = {}, action){
 }
 
 
-const rootReducer = combineReducers({categories, posts, comments})
+const rootReducer = combineReducers({categories, posts, comments, posts2})
 
 export default rootReducer
