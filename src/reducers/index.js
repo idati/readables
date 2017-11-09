@@ -11,7 +11,9 @@ import { GET_ALL_CATEGORY,
 	DOWN_VOTE_POST, 
 	GET_ALL_COMMENTS_BY_ID,
 	GET_ALL_POSTS_SORT_BY_TIME,
-	GET_ALL_POSTS_SORT_BY_VOTE } from '../actions/index'
+	GET_ALL_POSTS_SORT_BY_VOTE,
+	GET_ALL_POSTS_FILTER_BY_CATEGORY,
+	GET_POST_BY_ID } from '../actions/index'
 
 export function categories(state = [], action){
   switch (action.type) {
@@ -48,6 +50,28 @@ export function posts(state = [], action){
   
     case GET_ALL_POSTS_SORT_BY_VOTE:
     	return state.slice().sort(function(a,b){return b[5] - a[5]})
+
+    case GET_POST_BY_ID:
+      return {
+        ...state,
+        posts: action.posts
+      }
+     
+
+    case GET_ALL_POSTS_FILTER_BY_CATEGORY:
+      return action.posts.reduce((posts, post) => {
+        posts.push([
+                            post.id, 
+                            post.timestamp,
+                            post.title,
+                            post.body,
+                            post.author, 
+                            post.voteScore,
+                            post.category,
+                            post.deleted
+                          ] )
+        return posts.sort()
+      }, [])
 
     case UP_VOTE_POST:
       return {

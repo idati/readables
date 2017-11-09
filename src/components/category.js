@@ -10,40 +10,45 @@ import { getAllComments,
   downVotePost, 
   downVoteComment,
   getAllPostsortbytime,
-  getAllPostsortbyvote } from '../actions/index'
+  getAllPostsortbyvote,
+  getAllPostfilterbycategory } from '../actions/index'
 import React, { Component } from 'react';
 import '../App.css';
 import {getAllCommentsFromPost} from '../api/index'
 import CommentsList from './CommentsList'
 
-class category extends Component {
+class Category extends Component {
 
 	  componentDidMount() {
+      let {posts, getAllPostsortbytime, getAllPostsortbyvote, getAllPostfilterbycategory} = this.props
+      
       console.log(this)
       let categoryName = this.props.match.params.category
-
-      // let categoryName = this.props.match.params.category
-      // console.log('categoryName',categoryName, this)
-      
-      // let {post} = this.props
-      // this.props.getCommente(post)
-      // console.log('this',this.props.posts)
-      // this.props.getAllPosts();
-        // this.props.getCommente('8xf0y6ziyjabvozdd253nd');
-      // console.log('root3', getCommente())
+      console.log(categoryName, getAllPostfilterbycategory(categoryName))
+      getAllPostfilterbycategory(categoryName)
     
     }
 
 
   	render(){
       console.log(this)
-      let {posts, getAllPostsortbytime, getAllPostsortbyvote} = this.props
-      // console.log(getAllCommentsFromPost('8xf0y6ziyjabvozdd253nd'))
+      let {post, getAllPostsortbytime, getAllPostsortbyvote} = this.props
       let index=['id: ', 'timestamp: ', 'title: ', 'body: ', 'author: ', 'VoteScore: ', 'category: ']
-      // this.getall('8xf0y6ziyjabvozdd253nd')
       let k=0
+
+  
   		return(
   			<div>
+          <ul>
+          <ul><h2> {this.props.match.params.category} </h2></ul>
+          <ul>
+              <button type='button'
+              className={ `btn btn-primary` }
+              onClick={() => this.props.history.goBack()}>
+              Go Back
+            </button>
+          </ul>
+          </ul>
           <ul>
             <button type='button'
               className={ `btn btn-primary` }
@@ -55,8 +60,8 @@ class category extends Component {
               onClick={() => getAllPostsortbyvote()}>
               sort by vote
             </button>
-          </ul> 
-          {posts.map((i) => (
+          </ul>
+          {post.map((i) => (
             <ul key={i}>
               {i.map((x,j) => (<ul key={j}>{index[j]}{ x }</ul>))}
                 <ul><CommentsList id={i[0]} /></ul>
@@ -69,7 +74,6 @@ class category extends Component {
 
     }
 
-// <CommentList post={i[0]} getCommente={getCommente}/>
 
 export function mapDispatchToProps(dispatch) {
 
@@ -78,18 +82,18 @@ export function mapDispatchToProps(dispatch) {
     getCommente: (id) => dispatch(getCommente(id)),
     getAllPostsortbytime: () => dispatch(getAllPostsortbytime()),
     getAllPostsortbyvote: () => dispatch(getAllPostsortbyvote()),
-    // sortvoteScore: (posts) => posts.sort(function(a,b) {return a[5] - b[5]}),
-    // sorttimestamp: (posts) => posts.sort(function(a,b) {return a[1] - b[1]})
+    getAllPostfilterbycategory: (categoryName) => dispatch(getAllPostfilterbycategory(categoryName)),
+
 	}
 
 }
 
 export function mapStateToProps({posts}) {
-  // console.log(posts)
+  console.log(posts)
 	return{
-    posts: posts,
-    // comments: comments
+    post: posts,
+
 	}
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(category)
+export default connect(mapStateToProps, mapDispatchToProps)(Category)

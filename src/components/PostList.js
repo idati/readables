@@ -15,6 +15,7 @@ import React, { Component } from 'react';
 import '../App.css';
 import {getAllCommentsFromPost} from '../api/index'
 import CommentsList from './CommentsList'
+import Post from './Post'
 
 class PostList extends Component {
 
@@ -52,7 +53,7 @@ class PostList extends Component {
           </ul> 
           {posts.map((i) => (
             <ul key={i}>
-              {i.map((x,j) => (<ul key={j}>{index[j]}{ x }</ul>))}
+              <Post id={i[0]} post={i}/>
                 <ul><CommentsList id={i[0]} /></ul>
             </ul>
           ))}
@@ -64,6 +65,8 @@ class PostList extends Component {
     }
 
 // <CommentList post={i[0]} getCommente={getCommente}/>
+// <Post id={i[0]}/>
+// {i.map((x,j) => (<ul key={j}>{index[j]}{ x }</ul>))}
 
 export function mapDispatchToProps(dispatch) {
 

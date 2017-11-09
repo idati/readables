@@ -5,7 +5,7 @@ import { getAllCategory, getAllPosts, getCommente, createNewComment, upVotePost,
 import React, { Component } from 'react';
 import CategoryList from './components/CategoryList';
 import PostList from './components/PostList'
-import Category from './components/category';
+import Category from './components/Category';
 import './App.css';
 
 
@@ -20,14 +20,16 @@ class App extends Component {
     console.log('root',this)
     return (
       <div>
-        <Route exact path="/" render=
-        {() =>
-          <CategoryList />
-        }/>
-        <Route exact path="/:category" render={() =>
-          <Category />
-        }
-        />
+        <Switch>
+          <Route exact path="/" render=
+          {() =>
+            <CategoryList />
+          }/>
+          <Route exact path="/:category" render={(props) =>
+          <Category {...props}/>
+          }
+          />
+        </Switch>
       </div>
     );
   }
@@ -41,7 +43,7 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-function mapStateToProps({categories, posts, comments}) {
+function mapStateToProps({categories}) {
 
 
     return {

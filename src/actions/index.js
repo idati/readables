@@ -1,4 +1,4 @@
-import { fetchAllCategories, getPosts, getAllCommentsFromPost, newComment, votePost, voteComment } from '../api/index'
+import { fetchAllCategories, getPosts, getAllCommentsFromPost, newComment, votePost, voteComment, getAllPostsFromCategory, getPostsById } from '../api/index'
 
 export const GET_ALL_CATEGORY = 'GET_ALL_CATEGORY'
 export const GET_ALL_POSTS = 'GET_ALL_POSTS'
@@ -15,7 +15,8 @@ export const DOWN_VOTE_COMMENT = 'DOWN_VOTE_COMMENT';
 export const GET_ALL_COMMENTS_BY_ID='GET_ALL_COMMENTS_BY_ID';
 export const GET_ALL_POSTS_SORT_BY_TIME='GET_ALL_POSTS_SORT_BY_TIME;';
 export const GET_ALL_POSTS_SORT_BY_VOTE='GET_ALL_POSTS_SORT_BY_VOTE';
-
+export const GET_ALL_POSTS_FILTER_BY_CATEGORY='GET_ALL_POSTS_FILTER_BY_CATEGORY';
+export const GET_POST_BY_ID='GET_POST_BY_ID';
 export const LOADING_CATEGORY_ENUM = {
   COMMENTS: 'COMMENTS',
   POSTS: 'POSTS',
@@ -51,6 +52,36 @@ export function getAllPosts() {
   }
 }
 
+
+function getAllPostfilterbycategory_(posts) {
+  return {
+    type:GET_ALL_POSTS_FILTER_BY_CATEGORY,
+    posts
+  }
+}
+export function getAllPostfilterbycategory(category) {
+  console.log('getAllPostfilterbycategory')
+  return dispatch => {
+    return  getAllPostsFromCategory(category).then(data =>
+      dispatch(getAllPostfilterbycategory_(data)))
+      // dispatch(data))
+  }
+}
+
+
+function getPostbyId_(posts) {
+  return {
+    type:GET_POST_BY_ID,
+    posts
+  }
+}
+export function getPostbyId(id) {
+  return dispatch => {
+    return  getPostsById(id).then(data =>
+      dispatch(getPostbyId_(data)))
+      // dispatch(data))
+  }
+}
 
 
 

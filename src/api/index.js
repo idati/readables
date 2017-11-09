@@ -44,6 +44,18 @@ export const getAllCommentsFromPost = (id) =>
   .then( value => { return value })
 
 
+export const getAllPostsFromCategory = (categoryname) =>
+  fetch(`${api}/${categoryname}/posts/`, {headers})
+  .then(res => res.json())
+  .then( value => { return value })
+
+
+export const getPostsById = (id) =>
+  fetch(`${api}/posts/${id}`, {headers})
+  .then(res => res.json())
+  .then( value => { return value })  
+
+
 
 export const deletePost = (id) =>
     fetch(`${api}/posts/${id}`,{
