@@ -226,10 +226,37 @@ export const downVoteComment = (id) => dispatch => (
 );
 
 
+
+//--------------------------------------------------------------------------
+// function getAllPost(posts) {
+//   return {
+//     type:GET_ALL_POSTS,
+//     posts
+//   }
+// }
+
+// export function getAllPosts() {
+//   return dispatch => {
+//     return  getPosts().then(data =>
+//       dispatch(getAllPost(data)))
+//       // dispatch(data))
+//   }
+// }
+
+
+
+// export function upVotePost(id) {
+//   votePost(id, "upVote");
+// }
+
+
 export const upVotePost = (id) => dispatch => (
     votePost(id, "upVote")
-        .then(posts => 
-          dispatch({type: UP_VOTE_POST,posts}))
+      .then(posts =>
+      dispatch({type: UP_VOTE_POST,posts}))
+
+        // .then(posts => 
+        //   dispatch({type: UP_VOTE_POST,posts}))
 );
 
 export const downVotePost = (id) => dispatch => (

@@ -15,7 +15,8 @@ import { getAllComments,
   getPostbyId } from '../actions/index'
 import React, { Component } from 'react';
 import '../App.css';
-import {getAllCommentsFromPost} from '../api/index'
+import {getAllCommentsFromPost} from '../api/index';
+import PostList from './PostList'
 
 
 
@@ -56,41 +57,48 @@ class Post extends Component {
 
   	render(){
       console.log(this)
-      let {id, post, posts, posts2, getPostbyId, upVote, downVote, getAllPosts} = this.props
+      let {id, post, posts, posts2, getPostbyId, upVote, downVote, getAllPosts, state, getAllPostsortbyvote} = this.props
       let index=['id: ', 'timestamp: ', 'title: ', 'body: ', 'author: ', 'VoteScore: ', 'category: ']
       let k=0
+      // console.log(state.sort)
 
       function utwin(id){
         upVote(id);
+        // console.log('upVote')
         getAllPosts();
+        // console.log('getAllPosts')
+        // getAllPostsortbyvote();
+        // console.log('getAllPostsortbyvote')
+        // state.sort();
       }
 
       function dtwin(id){
         downVote(id);
         getAllPosts();
+        // getAllPostsortbyvote();
+        // state.sort();
       }
 
   		return(
   			<div>
 
-          {posts2.filter(function(post){return post[0]===id}).map((i,j) => (
+          {posts.filter(function(post){return post.id===id}).map((i,j) => (
             <div key={i}>
-              <ul key={i[2]+1}><h2>{i[2]}</h2></ul>
-              <ul key={i[4]+2}>author: {i[4]}</ul>
-              <ul key={i[1]+3}>timestamp: {getFormattedDate(i[1])}</ul>
-              <ul key={i[5]+4}>voteScore: {i[5]}</ul>
+              <ul key={i[2]+1}><h2>{i.title}</h2></ul>
+              <ul key={i[4]+2}>author: {i.author}</ul>
+              <ul key={i[1]+3}>timestamp: {getFormattedDate(i.timestamp)}</ul>
+              <ul key={i[5]+4}>commentCount: {i.commentCount}</ul>
+              <ul key={i[5]+4}>voteScore: {i.voteScore}</ul>
             </div>))}
-
-
           <ul>
             <button type='button'
               className={ `btn btn-primary` }
-              onClick={() => utwin(id)}>
+              onClick={() => upVote(id)}>
               upVote
             </button>
             <button type='button'
               className={ `btn btn-primary` }
-              onClick={() => dtwin(id)}>
+              onClick={() => downVote(id)}>
               downVote
             </button>
           </ul>
@@ -102,6 +110,14 @@ class Post extends Component {
     }
 
 
+          // {posts.filter(function(post){return post[0]===id}).map((i,j) => (
+          //   <div key={i}>
+          //     <ul key={i[2]+1}><h2>{i[2]}</h2></ul>
+          //     <ul key={i[4]+2}>author: {i[4]}</ul>
+          //     <ul key={i[1]+3}>timestamp: {getFormattedDate(i[1])}</ul>
+          //     <ul key={i[5]+4}>voteScore: {i[5]}</ul>
+          //   </div>))}
+
 
 export function mapPostDispatchToProps(dispatch) {
 
@@ -110,16 +126,19 @@ export function mapPostDispatchToProps(dispatch) {
     upVote: (id) => dispatch(upVotePost(id)),
     downVote: (id) => dispatch(downVotePost(id)),
     getPostbyId: (id) => dispatch(getPostbyId(id)),
+    getAllPostsortbytime: () => dispatch(getAllPostsortbytime()),
+    getAllPostsortbyvote: () => dispatch(getAllPostsortbyvote()),
 
 	}
 
 }
 
-export function mapPostStateToProps({posts2}) {
-  console.log('?????',posts2)
-
+export function mapPostStateToProps({posts}) {
+  console.log('Ausgabe?',this)
+  console.log('actual posts', PostList)
+  if(posts===1){}
   return{
-    posts2: posts2,
+    posts: posts,
 
 	}
 }

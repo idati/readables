@@ -27,107 +27,132 @@ export function categories(state = [], action){
   }
 }
 
-export function posts2(state=[], action){
-	switch (action.type) {
+// export function posts2(state=[], action){
+// 	switch (action.type) {
 
-	case DOWN_VOTE_POST:
-		return state
-      // return [[action.posts.id, action.posts.timestamp, action.posts.title, action.posts.body, action.posts.author, action.posts.voteScore, action.posts.category, action.posts.deleted]]
+// 	case DOWN_VOTE_POST:
+// 		return state
+//       // return [[action.posts.id, action.posts.timestamp, action.posts.title, action.posts.body, action.posts.author, action.posts.voteScore, action.posts.category, action.posts.deleted]]
 
-	case UP_VOTE_POST:
-		return state
-      // return [[action.posts.id, action.posts.timestamp, action.posts.title, action.posts.body, action.posts.author, action.posts.voteScore, action.posts.category, action.posts.deleted]]
+// 	case UP_VOTE_POST:
+// 		return state
+//       // return [[action.posts.id, action.posts.timestamp, action.posts.title, action.posts.body, action.posts.author, action.posts.voteScore, action.posts.category, action.posts.deleted]]
 
 
-	case GET_ALL_POSTS:
-      return action.posts.reduce((posts, post) => {
-        posts.push([
-                            post.id, 
-                            post.timestamp,
-                            post.title,
-                            post.body,
-                            post.author, 
-                            post.voteScore,
-                            post.category,
-                            post.deleted
-                          ] )
-        return posts.sort()
-      }, [])
+// 	case GET_ALL_POSTS:
+//       return action.posts.reduce((posts, post) => {
+//         posts.push([
+//                             post.id, 
+//                             post.timestamp,
+//                             post.title,
+//                             post.body,
+//                             post.author, 
+//                             post.voteScore,
+//                             post.category,
+//                             post.deleted
+//                           ] )
+//         return posts.sort()
+//       }, [])
 
-	case GET_POST_BY_ID:
-	return action.posts2
-      // return [action.posts2.id, action.post2.timestamp]
+// 	case GET_POST_BY_ID:
+// 	return action.posts2
 
-    // case UP_VOTE_POST:
-    //   return {
-    //     ...state,
-    //     posts: action.posts
-    //   }
-    //     case DOWN_VOTE_POST:
-    //   return {
-    //     ...state,
-    //     posts: action.posts
-    //   }
+// 	case GET_ALL_POSTS_SORT_BY_TIME:
+//     	return state.slice().sort(function(a,b){return b[1] - a[1]})
+  
+//     case GET_ALL_POSTS_SORT_BY_VOTE:
+//     	return state.slice().sort(function(a,b){return b[5] - a[5]})
+//       // return [action.posts2.id, action.post2.timestamp]
 
-	default:
-      return state
-	}
-}
+//     // case UP_VOTE_POST:
+//     //   return {
+//     //     ...state,
+//     //     posts: action.posts
+//     //   }
+//     //     case DOWN_VOTE_POST:
+//     //   return {
+//     //     ...state,
+//     //     posts: action.posts
+//     //   }
+
+// 	default:
+//       return state
+// 	}
+// }
 
 
 export function posts(state = [], action){
   switch (action.type) {
     
     case GET_ALL_POSTS:
-      return action.posts.reduce((posts, post) => {
-        posts.push([
-                            post.id, 
-                            post.timestamp,
-                            post.title,
-                            post.body,
-                            post.author, 
-                            post.voteScore,
-                            post.category,
-                            post.deleted
-                          ] )
-        return posts.sort()
-      }, [])
+    	return action.posts
+      // return action.posts.reduce((posts, post) => {
+      //   posts.push([
+      //                       post.id, 
+      //                       post.timestamp,
+      //                       post.title,
+      //                       post.body,
+      //                       post.author, 
+      //                       post.voteScore,
+      //                       post.category,
+      //                       post.deleted
+      //                     ] )
+      //   return posts.sort()
+      // }, [])
 
     case GET_ALL_POSTS_SORT_BY_TIME:
     	return state.slice().sort(function(a,b){return b[1] - a[1]})
   
     case GET_ALL_POSTS_SORT_BY_VOTE:
     	return state.slice().sort(function(a,b){return b[5] - a[5]})
-
+	// return Object.keys(state.slice()).sort(function(a,b){return b[5] - a[5]})
     // case GET_POST_BY_ID:
     //   return {posts: action.posts}
      
 
     case GET_ALL_POSTS_FILTER_BY_CATEGORY:
-      return action.posts.reduce((posts, post) => {
-        posts.push([
-                            post.id, 
-                            post.timestamp,
-                            post.title,
-                            post.body,
-                            post.author, 
-                            post.voteScore,
-                            post.category,
-                            post.deleted
-                          ] )
-        return posts.sort()
-      }, [])
-
-    // case UP_VOTE_POST:
-    //   return {
-    //     ...state,
-    //     posts: action.posts
-    //   }
-    //     case DOWN_VOTE_POST:
-    //   return {
-    //     ...state,
-    //     posts: action.posts
-    //   }
+    	return action.posts
+      // return action.posts.reduce((posts, post) => {
+      //   posts.push([
+      //                       post.id, 
+      //                       post.timestamp,
+      //                       post.title,
+      //                       post.body,
+      //                       post.author, 
+      //                       post.voteScore,
+      //                       post.category,
+      //                       post.deleted
+      //                     ] )
+      //   return posts.sort()
+      // }, [])
+	case DOWN_VOTE_POST:
+    case UP_VOTE_POST:
+    	// return console.log(action, state)
+    	let z = state.slice()
+    	z.forEach((element, index) => {
+    		console.log(element.id, index, action.posts.id);
+    		if(element.id === action.posts.id) {
+        	z[index] = action.posts;
+    		}
+		});
+		return z
+		// console.log(state)
+		// return state
+    	// return console.log(action, state)
+    	// return state
+    	// return action.posts
+      // return {
+      //   ...state,
+      //   posts: action.posts
+      // }
+    // case DOWN_VOTE_POST:
+    // 	return state
+    	// return state
+    	// return action.posts
+      // return {
+      //   ...state,
+      //   posts: action.posts
+      // }	
     default:
       return state
   }
@@ -175,6 +200,6 @@ export function comments(state = {}, action){
 }
 
 
-const rootReducer = combineReducers({categories, posts, comments, posts2})
+const rootReducer = combineReducers({categories, posts, comments })
 
 export default rootReducer

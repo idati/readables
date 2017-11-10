@@ -18,6 +18,16 @@ import CommentsList from './CommentsList'
 import Post from './Post'
 
 class PostList extends Component {
+    constructor(props, context){
+      super(props);
+      this.state = {
+        sort: 'None'
+    }
+
+  };
+
+
+
 
 	  componentDidMount() {
       let {posts, getAllPostsortbytime, getAllPostsortbyvote, getAllPosts} = this.props
@@ -33,40 +43,47 @@ class PostList extends Component {
 
 
   	render(){
-      // console.log(this)
+
+      console.log('########',this)
       let {posts, getAllPostsortbytime, getAllPostsortbyvote} = this.props
+
       // console.log(getAllCommentsFromPost('8xf0y6ziyjabvozdd253nd'))
+
+  
       let index=['id: ', 'timestamp: ', 'title: ', 'body: ', 'author: ', 'VoteScore: ', 'category: ']
       // this.getall('8xf0y6ziyjabvozdd253nd')
       let k=0
       // this.props.getAllPosts();
       console.log('????', this)
+
   		return(
   			<div>
           <ul>
+            <ul>Sort: {this.state.sort}</ul>
             <button type='button'
               className={ `btn btn-primary` }
-              onClick={() => getAllPostsortbytime()}>
+              onClick={(event) => {getAllPostsortbytime(); this.setState({sort: 'getAllPostsortbytime'})}}>
               sort by time
             </button>
             <button type='button'
               className={ `btn btn-primary` }
-              onClick={() => getAllPostsortbyvote()}>
+              onClick={(event) => {getAllPostsortbyvote(); this.setState({sort: 'getAllPostsortbyvote'})}}>
               sort by vote
             </button>
           </ul> 
-          {posts.map((i) => (
+          {Object.keys(posts).map((i) => (
             <ul key={i}>
-            <Post id={i[0]}/>
-                <ul><CommentsList id={i[0]} /></ul>
+                <Post id={posts[i].id} />
+                
             </ul>
           ))}
   			</div>
   			)
-
   	}
 
     }
+// <ul><CommentsList id={i[0]} /></ul>
+//<Post id={i[0]} state={this.state} />
 
 // <CommentList post={i[0]} getCommente={getCommente}/>
 // <Post id={i[0]}/>
