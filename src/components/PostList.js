@@ -16,12 +16,18 @@ import '../App.css';
 import {getAllCommentsFromPost} from '../api/index'
 import CommentsList from './CommentsList'
 import Post from './Post'
+import NewPost from './NewPost'
 
 class PostList extends Component {
     constructor(props, context){
       super(props);
       this.state = {
-        sort: 'None'
+        sort: 'None',
+        insert: false,
+        category: 'None',
+        title: 'None',
+        body: 'None',
+        author: 'None'
     }
 
   };
@@ -32,6 +38,8 @@ class PostList extends Component {
 	  componentDidMount() {
       let {posts, getAllPostsortbytime, getAllPostsortbyvote, getAllPosts} = this.props
       getAllPosts()
+      let PostName = this
+      console.log('LinkToId', PostName)
       // let {post} = this.props
       // this.props.getCommente(post)
       // console.log('this',this.props.posts)
@@ -55,30 +63,88 @@ class PostList extends Component {
       let k=0
       // this.props.getAllPosts();
       console.log('????', this)
-
-  		return(
-  			<div>
-          <ul>
-            <ul>Sort: {this.state.sort}</ul>
-            <button type='button'
-              className={ `btn btn-primary` }
-              onClick={(event) => {getAllPostsortbytime(); this.setState({sort: 'getAllPostsortbytime'})}}>
-              sort by time
-            </button>
-            <button type='button'
-              className={ `btn btn-primary` }
-              onClick={(event) => {getAllPostsortbyvote(); this.setState({sort: 'getAllPostsortbyvote'})}}>
-              sort by vote
-            </button>
-          </ul> 
-          {Object.keys(posts).map((i) => (
-            <ul key={i}>
-                <Post id={posts[i].id} />
+      if(this.state.insert===false){  
+        return(
+            <div>
+              <ul>
+                <ul>Sort: {this.state.sort}</ul>
+                <button type='button'
+                  className={ `btn btn-primary` }
+                  onClick={(event) => {getAllPostsortbytime(); this.setState({sort: 'getAllPostsortbytime'})}}>
+                  sort by time
+                </button>
+                <button type='button'
+                  className={ `btn btn-primary` }
+                  onClick={(event) => {getAllPostsortbyvote(); this.setState({sort: 'getAllPostsortbyvote'})}}>
+                  sort by vote
+                </button>
+    
+                <button type='button'
+                  className={ `btn btn-primary` }
+                  onClick={(event) => {this.setState({insert: true})}}>
+                  new post
+                </button>
+    
+              </ul> 
+    
+              {Object.keys(posts).map((i) => (
                 
-            </ul>
-          ))}
-  			</div>
-  			)
+                    <Post id={posts[i].id} />
+              
+              ))}
+            </div>
+            )} else {
+          return(
+            <div>
+              <ul>
+                <ul>Categories: {this.state.category}</ul>
+                <button type='button'
+                  className={ `btn btn-primary` }
+                  onClick={(event) => {getAllPostsortbytime(); this.setState({sort: 'getAllPostsortbytime'})}}>
+                  sort by time
+                </button>
+                <button type='button'
+                  className={ `btn btn-primary` }
+                  onClick={(event) => {getAllPostsortbyvote(); this.setState({sort: 'getAllPostsortbyvote'})}}>
+                  sort by vote
+                </button>
+    
+                <button type='button'
+                  className={ `btn btn-primary` }
+                  onClick={(event) => {this.setState({insert: true})}}>
+                  new post
+                </button>
+
+                  <div>
+                        <label htmlFor="category">Category: </label>
+                        <select name="category" id="caterogy"
+                            value={this.state.category}
+                            onChange={(event) => this.setState({category: event.target.value})}>
+                            <option value="category" disabled>category is</option>
+                            <option value={'react'}>React</option>
+                            <option value={'redux'}>Redux</option>
+                            <option value={'udacity'}>Udacity</option>
+                        </select>
+                  </div>
+              
+             <form onSubmit={console.log('++++',this)}>
+              <label>
+                   <input type="text" ref="title" />
+              </label>
+                  <input type="submit" value="Submit" />
+              </form>
+
+
+              </ul> 
+    
+              {Object.keys(posts).map((i) => (
+                
+                    <Post id={posts[i].id} />
+              
+              ))}
+            </div>
+            )
+    }
   	}
 
     }

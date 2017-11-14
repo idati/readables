@@ -17,6 +17,9 @@ export const GET_ALL_POSTS_SORT_BY_TIME='GET_ALL_POSTS_SORT_BY_TIME;';
 export const GET_ALL_POSTS_SORT_BY_VOTE='GET_ALL_POSTS_SORT_BY_VOTE';
 export const GET_ALL_POSTS_FILTER_BY_CATEGORY='GET_ALL_POSTS_FILTER_BY_CATEGORY';
 export const GET_POST_BY_ID='GET_POST_BY_ID';
+export const GET_ALL_COMMENT_SORT_BY_TIME='GET_ALL_COMMENT_SORT_BY_TIME';
+export const GET_ALL_COMMENT_SORT_BY_VOTE='GET_ALL_COMMENT_SORT_BY_VOTE'; 
+
 export const LOADING_CATEGORY_ENUM = {
   COMMENTS: 'COMMENTS',
   POSTS: 'POSTS',
@@ -106,6 +109,7 @@ function getAllPostsortbyvote_(posts) {
     posts
   }
 }
+
 export function getAllPostsortbyvote() {
   console.log('getAllPostsortbyvote')
   return dispatch => {
@@ -114,6 +118,41 @@ export function getAllPostsortbyvote() {
       // dispatch(data))
   }
 }
+
+
+function getAllCommentsortbyvote_(comments) {
+  return {
+    type:GET_ALL_COMMENT_SORT_BY_VOTE,
+    comments
+  }
+}
+
+export function getAllCommentsortbyvote(id) {
+  console.log('getAllCommentsortbyvote', id, getAllCommentsFromPost(id))
+  return dispatch => {
+    return  getAllCommentsFromPost(id).then(data =>
+      dispatch(getAllCommentsortbyvote_(data)))
+      // dispatch(data))
+  }
+}
+
+
+function getAllCommentsortbytime_(comments) {
+  return {
+    type:GET_ALL_COMMENT_SORT_BY_TIME,
+    comments
+  }
+}
+
+export function getAllCommentsortbytime(id) {
+  console.log('getAllCommentsortbytime', id, getAllCommentsFromPost(id))
+  return dispatch => {
+    return  getAllCommentsFromPost(id).then(data =>
+      dispatch(getAllCommentsortbytime_(data)))
+      // dispatch(data))
+  }
+}
+
 
 function getAllComment(comments,id) {
   console.log('cctop',comments, id)

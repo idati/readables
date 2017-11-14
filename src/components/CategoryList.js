@@ -21,6 +21,7 @@ class CategoryList extends Component {
             <ul><h2> Categories </h2></ul>
             <ul>{categories.map((i) => ( <ul key={i}><Link to={`/${i}`}>{i}</Link></ul>))}</ul>       
           </div>
+            <ul>────────────────  Posts  ────────────────</ul>
   			   <ul><h2> Post's </h2></ul>
           <PostList />
         </div>

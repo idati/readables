@@ -12,6 +12,8 @@ import { GET_ALL_CATEGORY,
 	GET_ALL_COMMENTS_BY_ID,
 	GET_ALL_POSTS_SORT_BY_TIME,
 	GET_ALL_POSTS_SORT_BY_VOTE,
+	GET_ALL_COMMENT_SORT_BY_TIME,
+	GET_ALL_COMMENT_SORT_BY_VOTE,	
 	GET_ALL_POSTS_FILTER_BY_CATEGORY,
 	GET_POST_BY_ID } from '../actions/index'
 
@@ -101,10 +103,11 @@ export function posts(state = [], action){
       // }, [])
 
     case GET_ALL_POSTS_SORT_BY_TIME:
-    	return state.slice().sort(function(a,b){return b[1] - a[1]})
+    	return state.slice().sort(function(a,b){return b.timestamp - a.timestamp})
+    	// return state.slice().sort(function(a,b){console.log('sort_by_time', a.id, b.id)})
   
     case GET_ALL_POSTS_SORT_BY_VOTE:
-    	return state.slice().sort(function(a,b){return b[5] - a[5]})
+    	return state.slice().sort(function(a,b){return b.voteScore - a.voteScore})
 	// return Object.keys(state.slice()).sort(function(a,b){return b[5] - a[5]})
     // case GET_POST_BY_ID:
     //   return {posts: action.posts}
@@ -162,10 +165,11 @@ export function posts(state = [], action){
 export function comments(state = {}, action){
   switch(action.type){
   	case GET_ALL_COMMENTS_BY_ID:
-          return {
-              ...state,
-              [action.id]: action.comments
-          }
+  		return action.comments
+          // return {
+          //     ...state,
+          //     [action.id]: action.comments
+          // }
 
     case GET_ALL_COMMENTS:
     	console.log('comment', action)
@@ -182,17 +186,33 @@ export function comments(state = {}, action){
           }
       case DOWN_VOTE_COMMENT:
       case UP_VOTE_COMMENT:
-            let existingComments2 = state[action.comments.parentId] || [];
-            for(var i in existingComments2){
-                if (existingComments2[i].id===action.comments.id){
-                    existingComments2[i]=action.comments
+          	let z = state.slice()
+    		z.forEach((element, index) => {
+    			console.log(element.id, index, action.comments.id);
+    			if(element.id === action.comments.id) {
+        			z[index] = action.comments;
+    			}
+			});
+		return z
 
-      }
-    }
-      return {
-        ...state,
-        [action.comments.parentId]: existingComments2
-      }
+	   case GET_ALL_COMMENT_SORT_BY_TIME:
+    	return state.slice().sort(function(a,b){return b.timestamp - a.timestamp})
+    	// return state.slice().sort(function(a,b){console.log('sort_by_time', a.id, b.id)})
+  
+       case GET_ALL_COMMENT_SORT_BY_VOTE:
+    	return state.slice().sort(function(a,b){return b.voteScore - a.voteScore})
+
+            // let existingComments2 = state[action.comments.parentId] || [];
+            // for(var i in existingComments2){
+            //     if (existingComments2[i].id===action.comments.id){
+            //         existingComments2[i]=action.comments
+
+      			// }
+    			// }
+      // 	return {
+      //   ...state,
+      //   [action.comments.parentId]: existingComments2
+      // }
 
       default:
         return state

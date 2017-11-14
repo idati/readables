@@ -67,7 +67,6 @@ class Category extends Component {
             {console.log('monster',i.id)}
             <Post id={i.id}/>
               
-                <ul><CommentsList id={i[0]} /></ul>
             </ul>
           ))}
   			</div>
@@ -76,7 +75,7 @@ class Category extends Component {
   	}
 
     }
-
+// <ul><CommentsList id={i[0]} /></ul>
 // {i.map((x,j) => (<ul key={j}>{index[j]}{ x }</ul>))}
 
 export function mapDispatchToProps(dispatch) {

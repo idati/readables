@@ -4,8 +4,10 @@ import { Route, withRouter, Link, Switch} from 'react-router-dom';
 import { getAllCategory, getAllPosts, getCommente, createNewComment, upVotePost, upVoteComment, downVotePost, downVoteComment } from './actions/index'
 import React, { Component } from 'react';
 import CategoryList from './components/CategoryList';
-import PostList from './components/PostList'
+import PostList from './components/PostList';
 import Category from './components/Category';
+import Post from './components/Post';
+import P404 from './components/P404';
 import './App.css';
 
 
@@ -27,6 +29,14 @@ class App extends Component {
           }/>
           <Route exact path="/:category" render={(props) =>
           <Category {...props}/>
+          }
+          />
+          <Route exact path="/:category/:id" render={(props) =>
+          <Post {...props}/>
+          }
+          />
+          <Route path="*" render={(props) =>
+          <P404 />
           }
           />
         </Switch>
