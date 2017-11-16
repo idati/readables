@@ -14,7 +14,7 @@ class CategoryList extends Component {
 
   	render(){
       let {categories} = this.props
-  		console.log('root2', this, typeof categories)
+  		// console.log('root2', this, typeof categories)
   		return(
   			<div key='1'>
           <div key='1.1'>

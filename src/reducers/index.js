@@ -15,7 +15,10 @@ import { GET_ALL_CATEGORY,
 	GET_ALL_COMMENT_SORT_BY_TIME,
 	GET_ALL_COMMENT_SORT_BY_VOTE,	
 	GET_ALL_POSTS_FILTER_BY_CATEGORY,
-	GET_POST_BY_ID } from '../actions/index'
+	GET_POST_BY_ID,
+	NEW_POST,
+	DELETE_POST,
+	UPDATE_POST } from '../actions/index'
 
 export function categories(state = [], action){
   switch (action.type) {
@@ -85,7 +88,24 @@ export function categories(state = [], action){
 
 export function posts(state = [], action){
   switch (action.type) {
-    
+
+
+  	case NEW_POST:
+  		return action.posts
+
+  	case UPDATE_POST:
+  		let y = state.slice()
+    	y.forEach((element, index) => {
+    	// console.log('king',element, index, action.posts);
+    		if(element.id === action.posts.id) {
+        	y[index] = element;
+        	y[index].body = action.posts.body;
+        	y[index].title = action.posts.title;
+    		}
+		});
+		return y
+
+    case DELETE_POST:
     case GET_ALL_POSTS:
     	return action.posts
       // return action.posts.reduce((posts, post) => {
@@ -133,7 +153,7 @@ export function posts(state = [], action){
     	// return console.log(action, state)
     	let z = state.slice()
     	z.forEach((element, index) => {
-    		console.log(element.id, index, action.posts.id);
+    		// console.log(element.id, index, action.posts.id);
     		if(element.id === action.posts.id) {
         	z[index] = action.posts;
     		}
@@ -172,7 +192,7 @@ export function comments(state = {}, action){
           // }
 
     case GET_ALL_COMMENTS:
-    	console.log('comment', action)
+    	// console.log('comment', action)
           return {
               ...state,
               [action.id]: action.comments
@@ -188,7 +208,7 @@ export function comments(state = {}, action){
       case UP_VOTE_COMMENT:
           	let z = state.slice()
     		z.forEach((element, index) => {
-    			console.log(element.id, index, action.comments.id);
+    			// console.log(element.id, index, action.comments.id);
     			if(element.id === action.comments.id) {
         			z[index] = action.comments;
     			}

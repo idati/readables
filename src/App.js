@@ -19,7 +19,7 @@ class App extends Component {
 
   render() {
     const {categories} = this.props
-    console.log('root',this)
+    // console.log('root',this)
     return (
       <div>
         <Switch>

@@ -23,7 +23,7 @@ export const getPosts = () =>
 
 
 // For Testing
-export const newPost = (id, timestamp, title, body, author, category) =>
+export const newPost = (body) =>
     fetch(`${api}/posts/`,{
       method:'POST',
       headers: {
@@ -31,7 +31,7 @@ export const newPost = (id, timestamp, title, body, author, category) =>
         'Content-Type': 'application/json'
       },
 
-      body: JSON.stringify({id, timestamp, title,body,author,category}),
+      body: JSON.stringify(body),
 
     }).then(res=>res.json())
       .then(res=>console.log(res))
@@ -75,6 +75,17 @@ export const deletePost = (id) =>
   }
   ))
 
+
+export const updatePost = (post) =>
+  fetch(`${api}/posts/${post.id}`, {
+    method: 'PUT',
+    headers: {
+      ...headers,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(post)
+  }).then(res => res.json())
+    .then(res=>console.log(res))
 
 export const editPost = (id, title, body) =>
     fetch(`${api}/posts/${id}`,{

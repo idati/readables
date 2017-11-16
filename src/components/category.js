@@ -23,23 +23,23 @@ class Category extends Component {
 	  componentDidMount() {
       let {posts, getAllPostsortbytime, getAllPostsortbyvote, getAllPostfilterbycategory} = this.props
       
-      console.log(this)
+      // console.log(this)
       let categoryName = this.props.match.params.category
-      console.log(categoryName, getAllPostfilterbycategory(categoryName))
+      // console.log(categoryName, getAllPostfilterbycategory(categoryName))
       getAllPostfilterbycategory(categoryName)
     
     }
 
 
   	render(){
-      console.log(this)
+      // console.log(this)
       let {post, getAllPostsortbytime, getAllPostsortbyvote} = this.props
       let index=['id: ', 'timestamp: ', 'title: ', 'body: ', 'author: ', 'VoteScore: ', 'category: ']
       let k=0
 
   
   		return(
-  			<div>
+  			<div key='36'>
           <ul>
           <ul><h2> {this.props.match.params.category} </h2></ul>
           <ul>
@@ -65,7 +65,7 @@ class Category extends Component {
           {post.map((i) => (
             <ul key={i}>
             {console.log('monster',i.id)}
-            <Post id={i.id}/>
+            <Post id={i.id} categoryName ={this.props.match.params.category}/>
               
             </ul>
           ))}
@@ -92,7 +92,7 @@ export function mapDispatchToProps(dispatch) {
 }
 
 export function mapStateToProps({posts}) {
-  console.log(posts)
+  // console.log(posts)
 	return{
     post: posts,
 

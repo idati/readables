@@ -1,4 +1,4 @@
-import { fetchAllCategories, getPosts, getAllCommentsFromPost, newComment, votePost, voteComment, getAllPostsFromCategory, getPostsById } from '../api/index'
+import { fetchAllCategories, getPosts, getAllCommentsFromPost, newComment, votePost, voteComment, getAllPostsFromCategory, getPostsById, newPost, deletePost, updatePost, editPost } from '../api/index'
 
 export const GET_ALL_CATEGORY = 'GET_ALL_CATEGORY'
 export const GET_ALL_POSTS = 'GET_ALL_POSTS'
@@ -19,6 +19,9 @@ export const GET_ALL_POSTS_FILTER_BY_CATEGORY='GET_ALL_POSTS_FILTER_BY_CATEGORY'
 export const GET_POST_BY_ID='GET_POST_BY_ID';
 export const GET_ALL_COMMENT_SORT_BY_TIME='GET_ALL_COMMENT_SORT_BY_TIME';
 export const GET_ALL_COMMENT_SORT_BY_VOTE='GET_ALL_COMMENT_SORT_BY_VOTE'; 
+export const NEW_POST='NEW_POST';
+export const DELETE_POST = 'DELETE_POST'
+export const UPDATE_POST = 'UPDATE_POST'
 
 export const LOADING_CATEGORY_ENUM = {
   COMMENTS: 'COMMENTS',
@@ -31,6 +34,12 @@ function getAll(categories) {
     type:GET_ALL_CATEGORY,
     categories
   }
+}
+
+export function editPost_(posts) {
+    return dispatch => {
+        return editPost(posts.id, posts.title, posts.body).then(data => dispatch({type: UPDATE_POST, posts}))
+    }
 }
 
 export function getAllCategory() {
@@ -189,6 +198,15 @@ function getAllCommentById(comments,id) {
   }
 }
 
+
+export function deletePost_(posts) {
+    return dispatch => {
+        return deletePost(posts).then(data => {
+            dispatch({type: DELETE_POST, posts})
+        })
+    }
+}
+
 export const getCommente = (id) => dispatch =>(
     getAllCommentsFromPost(id)
     .then(data => dispatch(getAllCommentById(data,id)))
@@ -213,6 +231,33 @@ export const createNewComment = (comments) => dispatch => (
             comments: newC
         }))
 );
+
+
+function create(posts) {
+    return {
+        type: GET_ALL_POSTS,
+        posts
+    }
+}
+
+export function newPost_(posts){
+  return dispatch => {
+      return newPost(posts).then(data => {
+        dispatch(create(posts))
+      })
+    
+  }
+}
+
+
+// export const newPost_ = (post) => dispatch => (
+//       newPost(post),
+//       getAllPosts()
+//         // .then(posts => dispatch({
+//         //     type: NEW_POST,
+//         //     posts
+//         // }))
+//   )
 
 
 export function unsetLoadingAction(type, unitId) {
