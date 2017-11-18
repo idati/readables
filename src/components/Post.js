@@ -19,6 +19,7 @@ import {getAllCommentsFromPost} from '../api/index';
 import PostList from './PostList'
 import Comment from './Comment'
 import * as api from '../api/index'
+import getPostsById from '../api/index'
 
 var identifier = require('identifier');
 
@@ -59,16 +60,19 @@ class Post extends Component {
         category: 'None',
         title: 'None',
         body: 'None',
-        author: 'None'
+        author: 'None',
+        link: '*****',
+        id: '*****',
+        act: '-----'
     }
 
   };
 
-	  componentDidMount() {
-      let {id, post, posts, posts2, getPostbyId, upVote, downVote, getAllPosts} = this.props
-      // console.log(id)
+	  componentWillMount() {
+      let {id, post, posts, posts2, getPostsbyId, upVote, downVote, getAllPosts} = this.props
+      console.log('id2',this.props.cat)
       if(!id){if(this.props.match){id=this.props.match.params.id}else{id=this.props.posts.id; posts=Object.keys(posts);}}
-
+      // getPostsbyId(this.state.id)
       // if(!id){if(this.props.match){id=this.props.match.params.id}else{id=this.props.posts.id; posts=Object.keys(posts);}}
       // getPostbyId(id)
       // console.log(getPostbyId(id))
@@ -77,7 +81,12 @@ class Post extends Component {
       // getAllPostfilterbycategory(categoryName)
       if(this.props.categoryName){console.log('NEWID',this); this.props.getAllPostfilterbycategory(this.props.categoryName)}else{getAllPosts()}
       // if(!id){if(this.props.match){id=this.props.match.params.id; check = true}else{id=this.props.posts.id; posts=Object.keys(posts); check = true}}
-
+      
+      this.setState({link: posts})
+      this.setState({id: id})
+      let temp = this.state.link//.filter(function(post){return post.id===this.state.id})
+      this.setState({act: temp})
+    console.log("W.T.F", this.props, id,  posts, this.state)
     }
 
     updatetitle(event){
@@ -115,17 +124,29 @@ class Post extends Component {
         deletePost_,
         editPost_
       } = this.props
-      let acategory = 'notdefined'
+      console.log('id',id)
+      let acategory = '*****'
       let check = false
       let actual
+      console.log('link',this.state.link, this.state.id)
+
       if(!id){if(this.props.match){id=this.props.match.params.id; check = true}else{id=this.props.posts.id; posts=Object.keys(posts); check = true}}
-      
-      if(typeof(posts)==='object'){actual = Object.keys(posts).filter(function(post){return post.id===id})}else{actual = posts.filter(function(post){return post.id===id})}
+      if(!this.props.posts[0]){getAllPosts(); console.log("ERROR", this.props.posts[0])}
+      if(typeof(posts)==='object'){actual = Object.keys(this.props.posts).filter(function(post){return post.id===id})}else{actual = this.props.posts.filter(function(post){return post.id===id})}
+
+      // let a = this.props.getPostbyId(id)
+      // if(!actual[0]){console.log("W.T.F", this.props, id, a, posts)}
+
       // if(!id){if(this.props.match){id=this.props.match.params.id}else{id=this.props.posts.id; posts=Object.keys(posts);}}
       // console.log('click edit in details',typeof(posts), typeof(posts)==='object')
       // actual = posts.filter(function(post){return post.id===id})
-      if(actual[0]){acategory = actual[0].category}
+      console.log('W.T.F.2',actual)
+      if(actual[0]){ acategory = posts.filter(function(post){return post.id===id})}
+      // acategory = this.state.link.filter(function(post){return post.id===this.state.id})
+      acategory = this.state.act
       let tmp
+      console.log('Look', this, acategory, id, posts, this.props, actual,  posts.filter(function(post){return post.id===id}));
+ 
       // if(!id){if(this.props.match){id=this.props.match.params.id; check = true}else{id=this.props.posts.id; posts=Object.keys(posts); check = true}}
       // if(this.props.categoryName){console.log('NEWID',this); this.props.getAllPostfilterbycategory(this.props.categoryName)}
       // let actual = posts.filter(function(post){return post.id===id})
@@ -198,7 +219,7 @@ class Post extends Component {
             </button>
 
             <div>
-              <Link to={`/${acategory}/${id}`}>Details</Link>
+              <Link to={`/${this.props.cat}/${id}`}>Details</Link>
             </div>
           </ul>
         </div>
@@ -365,7 +386,7 @@ export function mapPostDispatchToProps(dispatch) {
     // upVoteComment: (id) => dispatch(upVoteComment(id)),
     // downVoteComment: (id) => dispatch(downVoteComment(id)),
 
-    getPostbyId: (id) => dispatch(getPostbyId(id)),
+    getPostsbyId: (id) => dispatch(getPostbyId(id)),
     getAllPostsortbytime: () => dispatch(getAllPostsortbytime()),
     getAllPostsortbyvote: () => dispatch(getAllPostsortbyvote()),
     getCommente: (id) => dispatch(getCommente(id)),
@@ -384,7 +405,7 @@ export function mapPostStateToProps({posts}) {
   // console.log('Ausgabe?',this)
   // console.log('actual posts', PostList)
   // console.log('Commentss', comments)
-  if(posts===1){}
+  // if(posts===1){}
   return{
     posts: posts,
 

@@ -1,4 +1,18 @@
-import { fetchAllCategories, getPosts, getAllCommentsFromPost, newComment, votePost, voteComment, getAllPostsFromCategory, getPostsById, newPost, deletePost, updatePost, editPost } from '../api/index'
+import { fetchAllCategories, 
+  getPosts, 
+  getAllCommentsFromPost, 
+  newComment, 
+  votePost, 
+  voteComment, 
+  getAllPostsFromCategory, 
+  getPostsById, 
+  newPost, 
+  deletePost, 
+  updatePost, 
+  editPost, 
+  getComment, 
+  editComment, 
+  deleteComment} from '../api/index'
 
 export const GET_ALL_CATEGORY = 'GET_ALL_CATEGORY'
 export const GET_ALL_POSTS = 'GET_ALL_POSTS'
@@ -20,9 +34,14 @@ export const GET_POST_BY_ID='GET_POST_BY_ID';
 export const GET_ALL_COMMENT_SORT_BY_TIME='GET_ALL_COMMENT_SORT_BY_TIME';
 export const GET_ALL_COMMENT_SORT_BY_VOTE='GET_ALL_COMMENT_SORT_BY_VOTE'; 
 export const NEW_POST='NEW_POST';
-export const DELETE_POST = 'DELETE_POST'
-export const UPDATE_POST = 'UPDATE_POST'
-
+export const DELETE_POST = 'DELETE_POST';
+export const UPDATE_POST = 'UPDATE_POST';
+export const GET_COMMENT = 'GET_COMMENT';
+export const UPDATE_COMMENT = 'UPDATE_COMMENT';
+export const DELETE_COMMENTS = 'DELETE_COMMENTS';
+// export const editComment = (id, timestamp, body)
+// export const deleteComment = (id)
+// export const newComment = (id, timestamp, body, author, parentId)
 export const LOADING_CATEGORY_ENUM = {
   COMMENTS: 'COMMENTS',
   POSTS: 'POSTS',
@@ -33,6 +52,12 @@ function getAll(categories) {
   return {
     type:GET_ALL_CATEGORY,
     categories
+  }
+}
+
+export function editComment_(comments){
+  return dispatch => {
+    return editComment(comments.id, comments.timestamp, comments.body).then(data => dispatch({type: UPDATE_COMMENT, comments}))
   }
 }
 
@@ -81,16 +106,16 @@ export function getAllPostfilterbycategory(category) {
 }
 
 
-function getPostbyId_(posts2) {
+function getPostbyId_(posts) {
   return {
     type:GET_POST_BY_ID,
-    posts2
+    posts
   }
 }
-export function getPostbyId(id) {
+export function getPostbyId(posts) {
   return dispatch => {
-    return  getPostsById(id).then(data =>
-      dispatch(getPostbyId_(data)))
+    return  getPostsById(posts.id).then(data =>
+      dispatch({type:GET_POST_BY_ID, posts}))
       // dispatch(data))
   }
 }
@@ -207,11 +232,26 @@ export function deletePost_(posts) {
     }
 }
 
+
+export function deleteComment_(comments) {
+    return dispatch => {
+        return deleteComment(comments.id).then(data => {
+            dispatch({type: DELETE_COMMENTS, comments})
+        })
+    }
+}
+
+
 export const getCommente = (id) => dispatch =>(
     getAllCommentsFromPost(id)
     .then(data => dispatch(getAllCommentById(data,id)))
   )
 
+
+export const getComment_ = (id) => dispatch => (
+    getComment(id)
+    .then(data => dispatch({type: GET_COMMENT, data}))
+  )
 
 
 export function setLoadingAction(type, unitId) {
@@ -224,13 +264,20 @@ export function setLoadingAction(type, unitId) {
   }
 }
 
-export const createNewComment = (comments) => dispatch => (
-    newComment(comments)
-        .then(newC => dispatch({
-            type: CREATE_COMMENT,
-            comments: newC
-        }))
-);
+// export const createNewComment = (comments) => dispatch => (
+//     newComment(comments)
+//         .then(newC => dispatch({
+//             type: CREATE_COMMENT,
+//             comments: newC
+//         }))
+// );
+// identifier(21),this.state.timestamp,this.state.body, this.state.author, this.state.parentId
+export function createNewComment(comments) {
+    return dispatch => {
+        return newComment(comments.id, comments.timestamp, comments.body, comments.author, comments.parentId).then((data) => 
+          {dispatch( {type: CREATE_COMMENT,comments})})
+    }
+}
 
 
 function create(posts) {

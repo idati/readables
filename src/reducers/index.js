@@ -18,7 +18,10 @@ import { GET_ALL_CATEGORY,
 	GET_POST_BY_ID,
 	NEW_POST,
 	DELETE_POST,
-	UPDATE_POST } from '../actions/index'
+	UPDATE_POST,
+	GET_COMMENT,
+	UPDATE_COMMENT,
+	DELETE_COMMENTS } from '../actions/index'
 
 export function categories(state = [], action){
   switch (action.type) {
@@ -93,6 +96,7 @@ export function posts(state = [], action){
   	case NEW_POST:
   		return action.posts
 
+	
   	case UPDATE_POST:
   		let y = state.slice()
     	y.forEach((element, index) => {
@@ -104,7 +108,7 @@ export function posts(state = [], action){
     		}
 		});
 		return y
-
+	case GET_POST_BY_ID:
     case DELETE_POST:
     case GET_ALL_POSTS:
     	return action.posts
@@ -130,7 +134,7 @@ export function posts(state = [], action){
     	return state.slice().sort(function(a,b){return b.voteScore - a.voteScore})
 	// return Object.keys(state.slice()).sort(function(a,b){return b[5] - a[5]})
     // case GET_POST_BY_ID:
-    //   return {posts: action.posts}
+    //   return action.posts
      
 
     case GET_ALL_POSTS_FILTER_BY_CATEGORY:
@@ -190,20 +194,36 @@ export function comments(state = {}, action){
           //     ...state,
           //     [action.id]: action.comments
           // }
+    case UPDATE_COMMENT:
+      	let y = state.slice()
+    	y.forEach((element, index) => {
+    	// console.log('king',element, index, action.posts);
+    		if(element.id === action.comments.id) {
+        	y[index] = element;
+        	y[index].body = action.comments.body;
+        	y[index].timestamp = action.comments.timestamp;
+    		}
+		});
+		return y
+    case GET_COMMENT:
+    	return action.comments
 
+    case DELETE_COMMENTS:
+	case CREATE_COMMENT:
     case GET_ALL_COMMENTS:
+    	return action.comments
     	// console.log('comment', action)
-          return {
-              ...state,
-              [action.id]: action.comments
-          }
+          // return {
+          //     ...state,
+          //     [action.id]: action.comments
+          // }
 
-      case CREATE_COMMENT:
-        let existingComments = state[action.comments.parentId] || [];
-          return {
-            ...state,
-           [action.comments.parentId]: existingComments.concat(action.comments)
-          }
+      // case CREATE_COMMENT:
+      //   let existingComments = state[action.comments.parentId] || [];
+      //     return {
+      //       ...state,
+      //      [action.comments.parentId]: existingComments.concat(action.comments)
+      //     }
       case DOWN_VOTE_COMMENT:
       case UP_VOTE_COMMENT:
           	let z = state.slice()

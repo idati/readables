@@ -115,6 +115,16 @@ export const editComment = (id, timestamp, body) =>
     .then(res=>console.log(res))
 
 
+export const getComment = (id) =>
+    fetch(`${api}/comments/${id}`,{headers})
+    .then(res=>res.json())
+    .then(res=>console.log(res))
+
+// export const getPosts = () =>
+//     fetch(`${api}/posts/`,{headers})
+//     .then(res => res.json())
+
+
 export const deleteComment = (id) =>
     fetch(`${api}/comments/${id}`,{
     method:'DELETE',

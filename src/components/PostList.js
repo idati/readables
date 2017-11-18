@@ -142,7 +142,7 @@ class PostList extends Component {
     
               {Object.keys(posts).map((i) => (
                 
-                    <Post key={posts[i].timestamp} id={posts[i].id} />
+                    <Post key={posts[i].timestamp} id={posts[i].id} cat={posts[i].category}/>
               
               ))}
             </div>
@@ -204,7 +204,7 @@ class PostList extends Component {
     
               {Object.keys(posts).map((i) => (
                 
-                    <Post id={posts[i].id} />
+                    <Post id={posts[i].id} cat={posts[i].category} />
               
               ))}
             </div>

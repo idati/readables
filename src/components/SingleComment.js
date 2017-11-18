@@ -14,15 +14,16 @@ import { getAllComments,
   getAllPostfilterbycategory,
   getPostbyId,
   getAllCommentsortbyvote,
-  getAllCommentsortbytime } from '../actions/index'
+  getAllCommentsortbytime,
+  getComment_,
+  editComment_,
+  deleteComment_ } from '../actions/index'
 import React, { Component } from 'react';
 import '../App.css';
 import {getAllCommentsFromPost} from '../api/index';
-import PostList from './PostList'
-import SingleComment from './SingleComment'
+// import PostList from './PostList'
 import * as api from '../api/index'
 
-var identifier = require('identifier');
 
 function getFormattedDate(_date) {
     var date = new Date(_date)
@@ -42,28 +43,18 @@ function getFormattedDate(_date) {
 
     return str;
 }
-
-// (id, timestamp, body, author, parentId)
-export function commentCreator(body, author, postId) {
-    return {
-        id: identifier(21),
-        timestamp: Date.now(),
-        body,
-        author,
-        parentId: postId,
-        // voteScore: 1,
-        // deleted: false,
-        // parentDeleted: false
+    function gettime(){
+      return Date.now()  
     }
-}
+
 
 // id, timestamp, body, author, parentId
-class Comment extends Component {
+class SingleComment extends Component {
       constructor(props, context){
       super(props);
       this.state = {
-        id: 'None',
         edit: 'None',
+        id: 'None',
         timestamp: 'None',
         parentId: 'None',
         body: 'None',
@@ -74,10 +65,14 @@ class Comment extends Component {
 
 
 
+
+
 	  componentDidMount() {
-      let {id, post, posts, posts2, getPostbyId, upVote, downVote, getAllPosts, getCommente} = this.props
+      let {id,pId, post, posts, posts2, getPostbyId, upVote, downVote, getAllPosts, getCommente, getComment_, getAllComments} = this.props
       console.log(id)
-      getCommente(id)
+      // getCommente(id)
+      getAllComments(id)
+      console.log('getCommente',this)
       // getAllPosts()
       // if(!id){id=this.props.match.params.id; getCommente(id)}
       // getPostbyId(id)
@@ -86,6 +81,9 @@ class Comment extends Component {
       // console.log(categoryName, getAllPostfilterbycategory(categoryName))
       // getAllPostfilterbycategory(categoryName)
     
+    }
+    updatetimestamp(event){
+        this.setState({timestamp: Date.getDate()})
     }
 
     updatebody(event){
@@ -99,6 +97,7 @@ class Comment extends Component {
   	render(){
       console.log(this)
       let {id,
+        pId,
         post, 
         posts, 
         posts2, 
@@ -114,11 +113,16 @@ class Comment extends Component {
         downVoteComment,
         getAllCommentsortbyvote,
         getAllCommentsortbytime,
-        createNewComment
+        editComment_,
+        deleteComment_
       } = this.props
       let acategory = 'notdefined'
       let check = false
       let tmp
+      console.log('Watchme', comments, pId, id)
+      // if(typeof comments!=='object'){comments=comments.filter(function(post){return post.id===pId})}else{comments=Object.keys(comments).filter(function(post){return post.id===pId})}
+      if(pId===undefined){comments}else{comments=comments.filter(function(post){return post.id===pId})}
+      
       // if(!id){id=this.props.match.params.id; check = true}
       // let actual = posts.filter(function(post){return post.id===id})
       // let commenti=comments[id]
@@ -175,8 +179,8 @@ class Comment extends Component {
       //     </ul>
       //   </div>
       //   )} else {
-        console.log('checl', this.state.edit, id)
-        if(this.state.edit.id!==id)
+        console.log('checl', this.state, id, comments)
+        if(this.state.edit.id!==pId)
          { return(
                  // <div>
                    // <ul>
@@ -207,141 +211,122 @@ class Comment extends Component {
                    //   </button>
                    // </ul>
                    <div>
-                   <ul><h2>Comments</h2></ul>
-                   <ul>
-                     <button type='button'
-                       className={ `btn btn-primary` }
-                       onClick={(event) => {getAllCommentsortbytime(id); console.log(id)}}>
-                       sort by time
-                     </button>
-                     <button type='button'
-                       className={ `btn btn-primary` }
-                       onClick={(event) => {getAllCommentsortbyvote(id); console.log(id)}}>
-                       sort by vote
-                     </button>
-                    <button type='button'
-                    className={ `btn btn-primary` }
-                    onClick={() => (this.setState({edit: {id}}),
-                                    this.setState({timestamp: Date.now()}),
-                                    this.setState({parentId: this.props.id}),
-                                    console.log('identifier',identifier(21)),
-                                    this.setState({id: identifier(21)})
-                                    )}>
-                      new Comment
-                    </button>
-                     </ul>
          
                   {Object.keys(comments).map((j) => (
-
-
-                    <SingleComment id={id} pId={comments[j].id} />
-
-
+                   <div>
+                   <ul><h2>{comments[j].body}</h2></ul>
+                   <ul>author: {comments[j].author}</ul>
+                   <ul>timestamp: {getFormattedDate(comments[j].timestamp)}</ul>
+                   <ul>voteScore: {comments[j].voteScore}</ul>
+                   <ul>
+                   <button type='button'
+                     className={ `btn btn-primary` }
+                     onClick={() => upVoteComment(comments[j].id)}>
+                     upVoteComment
+                   </button>
+                   <button type='button'
+                     className={ `btn btn-primary` }
+                     onClick={() => downVoteComment(comments[j].id)}>
+                     downVoteComment
+                   </button>
+                   <button type='button'
+                     className={ `btn btn-primary` }
+                     onClick={() => (deleteComment_(comments[j]), getAllPosts())}>
+                     delete
+                   </button>
+                    <button type='button'
+                    className={ `btn btn-primary` }
+                    onClick={() => (id=comments[j].id,
+                              this.setState({edit: {id}}),
+                              tmp = comments.filter(function(post){return post.id===comments[j].id}),
+                              console.log(this.state.edit, id, tmp),
+                              this.setState({timestamp: tmp[0].timestamp}),
+                              this.setState({parentId: tmp[0].parentId}),
+                              this.setState({body: tmp[0].body}),
+                              this.setState({author: tmp[0].author})
+                              )}>
+                      edit
+                    </button>
+                   </ul>
+                   </div>
                    ))}
                  </div>
                    )
                  }else{
-
                   return(
+                  <div>
 
-                  <div>   
-                  <ul>Id: {this.state.id}</ul>
-                  <ul>timestamp: {getFormattedDate(this.state.timestamp)}</ul>
-                  <ul>Body: {this.state.body}</ul>
-                  <ul>Author: {this.state.author}</ul>
-                  <ul>ParentId: {this.state.parentId}</ul>
+                        <ul>timestamp: {getFormattedDate(this.state.timestamp)}</ul>
+                        <ul>Body: <textarea value={this.state.body} onChange={(event) => (this.updatebody(event))} /></ul>
+                        <ul>Author: {this.state.author}</ul>
+                        <ul><button type='button'
+                        className={ `btn btn-primary` }
+                        onClick={() => (this.setState({edit: {id}}), 
+                              tmp = comments,
+                              console.log('***',this.state.edit.id, id, tmp, comments),
+                              this.setState({id: tmp[0].id}),
+                              this.setState({parentId: tmp[0].parentId}),
+                              this.setState({timestamp:  tmp[0].timestamp}),
+                              this.setState({body: tmp[0].body}),
+                              this.setState({author: tmp[0].author}),
+                              // updatePost_(postUpdate(this.state.body, this.state.author, this.state.title, this.state.category)),
+                              console.log('come in',this.state.id, tmp[0].id, this.state.body,this.state.timestamp),
+                              editComment_({id: tmp[0].id, body: this.state.body, timestamp: gettime()}),
+                              this.setState({edit: 'None', timestamp: 'None', parentId: 'None', body:'None', author: 'None'})
+                              )}>
+                        update
+                        </button></ul>
 
-                  <ul>Body: <textarea value={this.state.body} onChange={(event) => (this.updatebody(event))} /></ul>
-                  <ul>Author:  <input value={this.state.author} onChange={(event) => (this.updateauthor(event))} /></ul>             
-                <ul><button type='button'
-                  className={ `btn btn-primary1` }
-                  onClick={(event) => {
-                    this.setState({edit: false}),
-                    // api.newComment(row.id, row.timestamp, row.body, row.author, row.parentId)
-                    // createNewComment(identifier(21),this.state.timestamp,this.state.body, this.state.author, this.state.parentId),
-                    createNewComment(commentCreator(this.state.body, this.state.author, this.state.parentId)),
-                    // getCommente(id),
-                    getAllPosts(),
-                    this.setState({edit:'None'})
-                  }}>
-                  insert
-                </button>
-                <button type='button'
-                  className={ `btn btn-primary1` }
-                  onClick={(event) => {this.setState({edit: false})}}>
-                  Cancel
-                </button></ul>
-                  {Object.keys(comments).map((j) => (
-
-
-                    <SingleComment id={id} pId={comments[j].id} />
-
-
-                   ))}
-                </div>)
+                 </div>
+                   )
+                 }
 
                  }
 
-
-               }
-
   	}
 
-        // id: identifier(21),
-        // timestamp: Date.now(),
-        // body,
-        // author,
-        // parentId: postId,
+    // }
 
-// (id, timestamp, body, author, parentId)
-    // createNewComment(commentCreator(this.state.body, this.state.author, this.state.parentId))
 
-        // id: Any unique ID. As with posts, UUID is probably the best here.
-        // timestamp: timestamp. Get this however you want.
-        // body: String
-        // author: String
-        // parentId
 
         // edit: 'None',
         // timestamp: 'None',
         // parentId: 'None',
         // body: 'None',
         // author: 'None'
-
-    // }
-                   // <div>
-                   // <ul><h2>{comments[j].body}</h2></ul>
-                   // <ul>author: {comments[j].author}</ul>
-                   // <ul>timestamp: {getFormattedDate(comments[j].timestamp)}</ul>
-                   // <ul>voteScore: {comments[j].voteScore}</ul>
-                   // <ul>
-                   // <button type='button'
-                   //   className={ `btn btn-primary` }
-                   //   onClick={() => upVoteComment(comments[j].id)}>
-                   //   upVoteComment
-                   // </button>
-                   // <button type='button'
-                   //   className={ `btn btn-primary` }
-                   //   onClick={() => downVoteComment(comments[j].id)}>
-                   //   downVoteComment
-                   // </button>
-                   //  <button type='button'
-                   //  className={ `btn btn-primary` }
-                   //  onClick={() => (id=comments[j].id,
-                   //            this.setState({edit: {id}}),
-                   //            tmp = comments.filter(function(post){return post.id===comments[j].id}),
-                   //            console.log(this.state.edit, id, tmp),
-                   //            this.setState({timestamp: tmp[0].timestamp}),
-                   //            this.setState({parentId: tmp[0].parentId}),
-                   //            this.setState({body: tmp[0].body}),
-                   //            this.setState({author: tmp[0].author})
-                   //            )}>
-                   //    edit
-                   //  </button>
-                   // </ul>
-                   // </div>
-
-
+                  // {Object.keys(comments).map((j) => (
+                  //  <div>
+                  //  <ul><h2>{comments[j].body}</h2></ul>
+                  //  <ul>author: {comments[j].author}</ul>
+                  //  <ul>timestamp: {getFormattedDate(comments[j].timestamp)}</ul>
+                  //  <ul>voteScore: {comments[j].voteScore}</ul>
+                  //  <ul>
+                  //  <button type='button'
+                  //    className={ `btn btn-primary` }
+                  //    onClick={() => upVoteComment(comments[j].id)}>
+                  //    upVoteComment
+                  //  </button>
+                  //  <button type='button'
+                  //    className={ `btn btn-primary` }
+                  //    onClick={() => downVoteComment(comments[j].id)}>
+                  //    downVoteComment
+                  //  </button>
+                  //   <button type='button'
+                  //   className={ `btn btn-primary` }
+                  //   onClick={() => (id=comments[j].id,
+                  //             this.setState({edit: {id}}),
+                  //             tmp = comments.filter(function(post){return post.id===comments[j].id}),
+                  //             console.log(this.state.edit, id, tmp),
+                  //             this.setState({timestamp: tmp[0].timestamp}),
+                  //             this.setState({parentId: tmp[0].parentId}),
+                  //             this.setState({body: tmp[0].body}),
+                  //             this.setState({author: tmp[0].author})
+                  //             )}>
+                  //     edit
+                  //   </button>
+                  //  </ul>
+                  //  </div>
+                  //  ))}
 
 
  // {comments.map((i) => {i.id})}
@@ -376,16 +361,20 @@ export function mapPostDispatchToProps(dispatch) {
 
     getAllCommentsortbyvote: (id) => dispatch(getAllCommentsortbyvote(id)),
     getAllCommentsortbytime: (id) => dispatch(getAllCommentsortbytime(id)),
-    createNewComment: (comments) => dispatch(createNewComment(comments))
+
+    getComment_: (id) => dispatch(getComment_(id)),
+    editComment_: (comments) => dispatch(editComment_(comments)),
+    deleteComment_: (comments) => dispatch(deleteComment_(comments)),
+    getAllComments: (id) => dispatch(getAllComments(id))
 
 	}
 
 }
 
 export function mapPostStateToProps({posts,comments}) {
-  console.log('Ausgabe?',this)
-  console.log('actual posts', PostList)
-  console.log('Commentss', comments)
+  // console.log('Ausgabe?',this)
+  // console.log('actual posts', PostList)
+  // console.log('Commentss', comments)
   if(posts===1){}
   return{
     // posts: posts,
@@ -393,4 +382,4 @@ export function mapPostStateToProps({posts,comments}) {
 	}
 }
 
-export default connect(mapPostStateToProps, mapPostDispatchToProps)(Comment)
+export default connect(mapPostStateToProps, mapPostDispatchToProps)(SingleComment)
